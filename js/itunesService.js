@@ -24,7 +24,7 @@ app.service('itunesService', function($http, $q){
     this.artistSearch = function(artist) {
     	var deferred = $q.defer();
 
-    	return $http.jsonp('https://itunes.apple.com/search?term=' + artist + '&callback=JSON_CALLBACK')
+    	$http.jsonp('https://itunes.apple.com/search?term=' + artist + '&callback=JSON_CALLBACK')
     		.then(function(response) {
     			var parsedResponse = response.data.results;
     			var artists = [];
