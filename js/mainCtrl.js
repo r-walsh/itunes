@@ -30,10 +30,14 @@ app.controller('mainCtrl', function($scope, itunesService){
   //*remember, that method should be expecting an artist name. The artist name is coming from the input box on index.html, 
   //head over there and check if that input box is tied to any specific model we could use.
   //Also note that that method should be retuning a promise, so you could use .then in this function.
-    
+  $scope.songData = [];
     //Code here
     $scope.getSongData = function() {
-      itunesService.artistSearch($scope.artist);
+      itunesService.artistSearch($scope.artist)
+        .then(function(data) {
+          $scope.songData = data;
+          console.log($scope.songData);
+        });
     }
 
   //Check that the above method is working by entering a name into the input field on your web app, and then console.log the result

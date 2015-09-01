@@ -11,7 +11,7 @@ app.service('itunesService', function($http, $q){
 
     //Code here
     this.formatData = function(data) {
-    	returnObj = {
+    	return {
 	    	AlbumArt: data.artworkUrl100,
 	    	Artist: data.artistName,
 	    	Collection: data.collectionName,
@@ -19,20 +19,21 @@ app.service('itunesService', function($http, $q){
 	    	Play: data.previewUrl,
 	    	Type: data.kind
     	}
-    	return returnObj;
     }
 
     this.artistSearch = function(artist) {
-    	// var deferred = $q.defer();
-    	var passToController = [];
-    	$http.jsonp('https://itunes.apple.com/search?term=' + artist + '&callback=JSON_CALLBACK')
+    	var deferred = $q.defer();
+
+    	return $http.jsonp('https://itunes.apple.com/search?term=' + artist + '&callback=JSON_CALLBACK')
     		.then(function(response) {
     			var parsedResponse = response.data.results;
+    			var artists = [];
     			for (var i = 0; i < parsedResponse.length; i++){
-    				passToController.push(this.formatData(parsedResponse[i]));
+    				artists.push(this.formatData(parsedResponse[i]));
     			}
-    			// deferred.resolve(passToController);
+    			deferred.resolve(artists);
     		}.bind(this));
-    		return passToController;
+
+    		return deferred.promise;
     }
 });
